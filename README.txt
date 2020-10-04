@@ -17,7 +17,7 @@ This plugin creates a new tab in My Account Page named as Order History & allows
 
 == Installation ==
 
-1. Upload `woocommerce-order-filtering-by-customer.php` to the `/wp-content/plugins/` directory
+1. Upload `woocommerce-order-filtering-by-customer` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Screenshots ==
