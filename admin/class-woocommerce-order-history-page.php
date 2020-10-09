@@ -55,7 +55,7 @@ class Woocommerce_Order_History_Page {
      */
     public function wofbc_order_history_my_account_menu_items($items) {
         $new_items = array();
-        $new_items['order_history'] = _('Order History','woocommerce-order-filtering-by-customer' );
+        $new_items['order_history'] = __('Order History','woocommerce-order-filtering-by-customer' );
 
         // Add the new item after `orders`.
         return $this->wofbc_order_history_insert_after_helper($items, $new_items, 'orders');
@@ -102,6 +102,8 @@ class Woocommerce_Order_History_Page {
             <?php
             global $wp_locale, $wpdb;
             $extra_checks = "AND post_status ='wc-completed' ";
+            $extra_checks .= "OR post_status ='wc-processing' ";
+            $extra_checks .= "OR post_status ='wc-refunded' ";
             $filter_post_status = filter_input( INPUT_GET, "post_status" );
             if ( !isset( $filter_post_status ) || 'trash' !== $filter_post_status ) {
                 $extra_checks .= " AND post_status != 'trash'";
@@ -211,7 +213,7 @@ class Woocommerce_Order_History_Page {
                     'limit'=>-1,
                     'customer' => get_current_user_id(),
                     'type'=> 'shop_order',
-                    'status'=> array( 'wc-completed','wc-refunded' )
+                    'status'=> array( 'wc-completed','wc-refunded', 'wc-processing' ),
                 )
             );
         } else{
@@ -219,7 +221,7 @@ class Woocommerce_Order_History_Page {
                     'limit'=>-1,
                     'customer' => get_current_user_id(),
                     'type'=> 'shop_order',
-                    'status'=> array( 'wc-completed','wc-refunded' ),
+                    'status'=> array( 'wc-completed','wc-refunded', 'wc-processing' ),
                     'date_created'=> $initial_date .'...'. $final_date
                 )
             );
