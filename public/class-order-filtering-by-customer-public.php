@@ -66,7 +66,7 @@ class Woocommerce_Order_Filtering_By_Customer_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woocommerce-order-filtering-by-customer-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/order-filtering-by-customer-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -89,7 +89,7 @@ class Woocommerce_Order_Filtering_By_Customer_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woocommerce-order-filtering-by-customer-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/order-filtering-by-customer-public.js', array( 'jquery' ), $this->version, false );
         wp_localize_script( $this->plugin_name, 'wc_order_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 	}

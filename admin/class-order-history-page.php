@@ -28,7 +28,7 @@ class Woocommerce_Order_History_Page {
 		add_filter('woocommerce_account_menu_items', array($this,'wofbc_order_history_my_account_menu_items'), 10);
 
         //Callback for Endpoint Content
-		add_action('woocommerce_account_order_history_endpoint', array($this,'wofbc_order_history_endpoint_content'), 10);
+		add_action('woocommerce_account_order-history_endpoint', array($this,'wofbc_order_history_endpoint_content'), 10);
 
         //Ajax Callback for Orders request
         add_action( 'wp_ajax_woocommerce_order_filter', array($this, 'wofbc_woocommerce_order_filter' ));
@@ -44,7 +44,7 @@ class Woocommerce_Order_History_Page {
      * @since    1.0.0
      */
 	public function wofbc_order_history_endpoints() {
-        add_rewrite_endpoint('order_history', EP_ROOT | EP_PAGES);
+        add_rewrite_endpoint('order-history', EP_ROOT | EP_PAGES);
     }
 
     /**
@@ -55,7 +55,7 @@ class Woocommerce_Order_History_Page {
      */
     public function wofbc_order_history_my_account_menu_items($items) {
         $new_items = array();
-        $new_items['order_history'] = __('Order History','woocommerce-order-filtering-by-customer' );
+        $new_items['order-history'] = __('Order History','woocommerce-order-filtering-by-customer' );
 
         // Add the new item after `orders`.
         return $this->wofbc_order_history_insert_after_helper($items, $new_items, 'orders');
@@ -66,7 +66,7 @@ class Woocommerce_Order_History_Page {
      */
     public function wofbc_order_history_endpoint_content() {
         $user_id = get_current_user_id();
-        echo $this->wofbc_get_customer_order_list($user_id);
+        return $this->wofbc_get_customer_order_list($user_id);
     }
 
     /*
@@ -97,13 +97,16 @@ class Woocommerce_Order_History_Page {
                 )
             )
         );
-        if ( $customer_orders ) : ?>
+        if ( $customer_orders ) { ?>
             <h3><?php echo apply_filters( 'woocommerce_my_account_my_orders_title', esc_html__( 'Orders History', 'woocommerce-order-filtering-by-customer' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></h3>
             <?php
             global $wp_locale, $wpdb;
             $extra_checks = "AND post_status ='wc-completed' ";
             $extra_checks .= "OR post_status ='wc-processing' ";
             $extra_checks .= "OR post_status ='wc-refunded' ";
+            $extra_checks .= "OR post_status ='wc-cancelled' ";
+            $extra_checks .= "OR post_status ='wc-on-hold'' ";
+            $extra_checks .= "OR post_status =''wc-failed' ";
             $filter_post_status = filter_input( INPUT_GET, "post_status" );
             if ( !isset( $filter_post_status ) || 'trash' !== $filter_post_status ) {
                 $extra_checks .= " AND post_status != 'trash'";
@@ -183,7 +186,9 @@ class Woocommerce_Order_History_Page {
                 <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php endif;
+        <?php } else {
+            echo 'No order has been made yet.';
+        };
     }
 
     /**
@@ -213,7 +218,7 @@ class Woocommerce_Order_History_Page {
                     'limit'=>-1,
                     'customer' => get_current_user_id(),
                     'type'=> 'shop_order',
-                    'status'=> array( 'wc-completed','wc-refunded', 'wc-processing' ),
+            'status'=> array( 'wc-completed','wc-refunded', 'wc-processing', 'wc-cancelled', 'wc-on-hold', 'wc-pending', 'wc-failed' ),
                 )
             );
         } else{
@@ -221,7 +226,7 @@ class Woocommerce_Order_History_Page {
                     'limit'=>-1,
                     'customer' => get_current_user_id(),
                     'type'=> 'shop_order',
-                    'status'=> array( 'wc-completed','wc-refunded', 'wc-processing' ),
+            'status'=> array( 'wc-completed','wc-refunded', 'wc-processing', 'wc-cancelled', 'wc-on-hold', 'wc-pending', 'wc-failed' ),
                     'date_created'=> $initial_date .'...'. $final_date
                 )
             );
@@ -230,9 +235,10 @@ class Woocommerce_Order_History_Page {
             foreach ($customer_orders as $order_id) {
                 $item_count = $order_id->get_item_count();
                 $datef = esc_html(wc_format_datetime($order_id->get_date_created()));
+                $view_order_endpoint = get_option('woocommerce_myaccount_view_order_endpoint');
                 echo '<tr>
                     <td class="order-number" data-title="Order">
-                        <a href="/my-account/view-order/' . $order_id->get_order_number() . '">#
+                        <a href="/my-account/'.$view_order_endpoint.'/' . $order_id->get_order_number() . '">#
                             ' .$order_id->get_order_number().'
                         </a>
                     </td>
@@ -242,7 +248,7 @@ class Woocommerce_Order_History_Page {
                         Rs' . $order_id->total . ' for ' . $item_count . ' items
                      </td>
                     <td class="order-actions" data-title="&nbsp;">
-                        <a class="button view" href="/my-account/view-order/' . $order_id->get_order_number() . '">
+                        <a class="button view" href="/my-account/'.$view_order_endpoint.'/' . $order_id->get_order_number() . '">
                             '.esc_html__( 'View', 'woocommerce-order-filtering-by-customer').'
                         </a>
                     </td>
