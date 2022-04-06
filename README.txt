@@ -1,7 +1,7 @@
-=== WooCommerce Order Filtering by Customer ===
-Contributors: abdullahramzan
-Donate link: http://mrabdullahramzan.wordpress.com/
-Tags: woocommerce, customer order history, order filtering, orders
+=== Order Filtering by Customer ===
+Contributors: torontodigits
+Donate link: https://torontodigits.com/
+Tags: customer order history, order filtering, order status, my account
 Requires at least: 5.0
 Tested up to: 5.5.1
 Stable tag: 1.0
@@ -17,7 +17,7 @@ This plugin creates a new tab in My Account Page named as Order History & allows
 
 == Installation ==
 
-1. Upload `woocommerce-order-filtering-by-customer` to the `/wp-content/plugins/` directory
+1. Upload `woo-order-filtering-by-customer` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Screenshots ==

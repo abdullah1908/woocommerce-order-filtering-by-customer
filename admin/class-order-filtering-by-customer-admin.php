@@ -47,7 +47,7 @@ class Woocommerce_Order_Filtering_By_Customer_Admin {
         /**
          * The class responsible for defining all the plugin settings that occur in the my account page area.
          */
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-woocommerce-order-history-page.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-order-history-page.php';
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Woocommerce_Order_Filtering_By_Customer_Admin {
 		/**
 		 * It is used to enqueue Admin Style.
 		 */
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woocommerce-order-filtering-by-customer-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/order-filtering-by-customer-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -74,7 +74,7 @@ class Woocommerce_Order_Filtering_By_Customer_Admin {
 		/**
 		 * It is used to enqueue Admin Script.
 		 */
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woocommerce-order-filtering-by-customer-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/order-filtering-by-customer-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 }
